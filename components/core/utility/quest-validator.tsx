@@ -13,7 +13,10 @@ export function QuestValidator({ }: QuestValidatorProps) {
     "metadata": {
         "owner": "5208980",
         "name": "ape-quest",
-        "chain": "84532"
+        "chain": "84532",
+        "title": "Staking Ape Coin",
+        "description": "This is a template for creating a new learn path",
+        "image": "https://placehold.co/600x400"
     },
     "quests": [
         {
@@ -21,7 +24,7 @@ export function QuestValidator({ }: QuestValidatorProps) {
             "type": "transaction",
             "chain": "11155111",
             "contract": "0x755457DBC2aAa7568169C58942755c8Bf2b406d1",
-            "abi": ["function mint(address to, uint256 amount)"],
+            "abi": ["function mint(address to, uint256 amount)"]
         }
     ]
 }
@@ -72,7 +75,7 @@ export function QuestValidator({ }: QuestValidatorProps) {
         <Textarea onChange={(e) => setValue(e.target.value)} value={value} placeholder="value"
             className="h-[256px]" />
         <Button onClick={handleMethod} disabled={loading}>{loading ? "Validating..." : "Validate"}</Button>
-        <Button onClick={storeSubmissionQuest} disabled={storeLoading}>{storeLoading ? "Storing..." : "Store"}</Button>
+        {/* <Button onClick={storeSubmissionQuest} disabled={storeLoading}>{storeLoading ? "Storing..." : "Store"}</Button> */}
 
         {output && <div>{output}</div>}
     </div>
