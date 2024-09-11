@@ -3,6 +3,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { useState } from "react";
 import { validate } from "@/lib/quest/validate";
 import { convertImportToMongo } from "@/lib/quest/converter";
+import { UtilHeader } from "./util-header";
 
 interface QuestValidatorProps extends React.HTMLAttributes<HTMLDivElement> {
 }
@@ -72,6 +73,9 @@ export function QuestValidator({ }: QuestValidatorProps) {
     }
 
     return <div>
+        <UtilHeader title="Quest Validator"
+            description="Import a quest.config.json to see if its valid" />
+
         <Textarea onChange={(e) => setValue(e.target.value)} value={value} placeholder="value"
             className="h-[256px]" />
         <Button onClick={handleMethod} disabled={loading}>{loading ? "Validating..." : "Validate"}</Button>
