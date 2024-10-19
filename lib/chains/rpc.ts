@@ -148,7 +148,7 @@ const data: { [key: string]: string } = {
     [ChainID.LISK_MAINNET]: "https://rpc.api.lisk.com",
     [ChainID.LISK_SEPOLIA]: "https://rpc.sepolia-api.lisk.com",
     [ChainID.REDSTONE_MAINNET]: "https://rpc.garnetchain.com",
-    [ChainID.REDSTONE_GARNET_TESTNET]: "wss://rpc.garnetchain.com",
+    [ChainID.REDSTONE_GARNET_TESTNET]: "https://rpc.garnetchain.com",
     [ChainID.OPEN_CAMPUS_CODEX]: "https://rpc.open-campus-codex.gelato.digital",
     [ChainID.UNICHAIN_SEPOLIA]: "https://sepolia.unichain.org",
     [ChainID.MOVEMENT_IMOLA]: "	https://mevm.devnet.imola.movementnetwork.xyz",

@@ -60,7 +60,7 @@ const data: { [key: string]: string } = {
   [ChainID.ASTAR_MAINNET]: "https://astar.blockscout.com",
   [ChainID.SHIDEN_MAINNET]: "https://shiden.blockscout.com",
   [ChainID.SHUBIYA_TESTNET]: "https://shibuya.blockscout.com",
-  [ChainID.ZETACHAIN_MAINNET]: "https://zetachain.blockscout.com",
+  [ChainID.ZETACHAIN_MAINNET]: "",
   [ChainID.ZETACHAIN_TESTNET]: "https://zetachain-athens-3.blockscout.com",
   [ChainID.FLARE_MAINNET]: "https://flare-explorer.flare.network",
   [ChainID.FLARE_COSTON]: "https://coston-explorer.flare.network",
@@ -113,8 +113,7 @@ const data: { [key: string]: string } = {
   [ChainID.ROOTSTOCK_TESTNET]: "https://rootstock-testnet.blockscout.com",
   [ChainID.LIGHTLINK_PHOENIX_MAINNET]: "https://phoenix.lightlink.io",
   [ChainID.LIGHTLINK_PEGASUS_TESTNET]: "https://pegasus.lightlink.io",
-  [ChainID.ETHERLINK_MAINNET]: "https://explorer.etherlink.com",
-  [ChainID.ETHERLINK_TESTNET]: "https://testnet.explorer.etherlink.com",
+  [ChainID.ETHERLINK_TESTNET]: "https://testnet-explorer.etherlink.com",
   [ChainID.SHARDEUM_SPHINX_1_X]: "https://explorer-sphinx.shardeum.org",
   [ChainID.VELAS_MAINNET]: "https://evmexplorer.velas.com",
   [ChainID.MODE_MAINNET]: "https://explorer.mode.network",
@@ -126,8 +125,7 @@ const data: { [key: string]: string } = {
   [ChainID.DOS_MAINNET]: "https://doscan.io",
   [ChainID.DOS_TESTNET]: "https://test.doscan.io",
   [ChainID.DEGEN_MAINNET]: "https://explorer.degen.tips",
-  [ChainID.TAIKO_MAINNET]: "https://taikoscan.io",
-  [ChainID.TAIKO_KATLA_TESTNET]: "https://hekla.taikoscan.io",
+  [ChainID.TAIKO_KATLA_TESTNET]: "https://explorer.katla.taiko.xyz",
   [ChainID.SHIMMER_MAINNET]: "https://explorer.evm.shimmer.network",
   [ChainID.SHIMMER_TESTNET]: "https://explorer.evm.testnet.shimmer.network",
   [ChainID.FRAXSCAN_MAINNET]: "https://fraxscan.com",
@@ -156,11 +154,6 @@ const data: { [key: string]: string } = {
   [ChainID.OPEN_CAMPUS_CODEX]: "https://opencampus-codex.blockscout.com",
   [ChainID.UNICHAIN_SEPOLIA]: "https://sepolia.uniscan.xyz",
   [ChainID.MOVEMENT_IMOLA]: "https://explorer.devnet.imola.movementnetwork.xyz",
-  [ChainID.XAI_GAMES_MAINNET]: "https://xaiscan.io",
-  [ChainID.XAI_ARB_TESTNET]: "https://sepolia.xaiscan.io",
-  [ChainID.SONEIUM_TESTNET]: "https://explorer-testnet.soneium.org",
-  [ChainID.BLACKFORT_MAINNET]: "https://blackfort.blockscout.com",
-  [ChainID.BLACKFORT_TESTNET]: "https://blackfort-testnet.blockscout.com",
 }
 
 export const getExplorer = (network: string): string => data[network] || ""
@@ -173,6 +166,7 @@ export const getContractExplorer = (network: string, contract: string): string =
     case ChainID.TRON_MAINNET:
     case ChainID.TRON_SHASTA_TESTNET:
     case ChainID.COTI_DEVNET:
+    case ChainID.COTI_TESTNET:
       addressPath = `contract/${contract}`
     case ChainID.PALM_MAINNET:
     case ChainID.PALM_TESTNET:
