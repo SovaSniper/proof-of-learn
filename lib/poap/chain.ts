@@ -38,4 +38,4 @@ export const educhain = defineChain({
     },
 })
 
-export const selectedNetwork = educhain
+export const selectedNetwork = openCampusCodex
