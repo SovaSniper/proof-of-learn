@@ -42,13 +42,24 @@ export const generateQuestPath = (item: QuestTitle, owner: string, name: string,
     return joinUri(...paths)
 }
 
-// Generate a unique id for the quest. This should be used to identify the quest
-// Example: owner/repo/path/to/quest/README.md 
-// Important to include the README.md as it will be used to validate the quest
+/**
+ * Method to generate Quest id for a given Github URL
+ * For example a quest for this content,
+ * https://github.com/POLearn/pol-template/blob/master/content/01_deploy_your_first_token/05_deploy/README.md
+ * 
+ * Will be converted
+ * polearn/pol-template/content/01_deploy_your_first_token/05_deploy/README.md
+ * 
+ * Note that it the README.md is include to validate the quest
+ * the path should be lowercase except for the README.md
+ */
 export const generateQuestId = (uri: string): string => {
     const parsed = GitUrlParse(uri)
-    const questPath = path.join(parsed.full_name, parsed.filepath)
-    return hashMessage(questPath.replace(/\\/g, "/"))
+    const questPath = path.join(parsed.full_name.toLowerCase(), parsed.filepath.toLowerCase())
+    // Hacky method but it should be like this
+    const correctedPath = questPath.replace(/readme\.md$/i, 'README.md');
+
+    return hashMessage(correctedPath.replace(/\\/g, "/"))
 }
 
 export const generateQuestIdByQuestStructureItem = (item: QuestStructureItem): string => {
@@ -76,8 +87,8 @@ function sortStringNumbers(arr: string[]): string[] {
     });
 }
 
-export const mask = (address: string): string => {
-    return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`
+export const mask = (address: string, depth: number = 8): string => {
+    return `${address.substring(0, depth)}...${address.substring(address.length - Math.ceil(depth / 2))}`
 }
 
 export const removeMetadata = (bytecode: `0x${string}`): `0x${string}` => {
@@ -117,4 +128,19 @@ export const replacePushData = (bytecode: `0x${string}`) => {
     const replacedBytecode = bytecode.replace(addressPattern, 'PUSH32_DATA');
 
     return replacedBytecode as `0x${string}`;
+}
+
+export const epochToFormattedDate = (epochTime: number): string => {
+    const date = new Date(epochTime * 1000);
+
+    const options: Intl.DateTimeFormatOptions = {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+    };
+
+    return new Intl.DateTimeFormat('en-US', options).format(date);
 }

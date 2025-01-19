@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { NavBar } from "@/components/core/nav/nav-bar";
+import { NavBar } from "@/components/core/nav";
 import { aeonik } from "@/lib/fonts";
 import { Provider } from "@/components/provider";
 import { Toaster } from 'react-hot-toast';
@@ -8,15 +8,12 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { GoogleAnalytics } from '@next/third-parties/google'
 
 import "./globals.css";
-import '@mysten/dapp-kit/dist/index.css';
-import { ArrowUpRight, Cross } from "lucide-react";
 import { Banner } from "@/components/core/home/banner";
 
 export const metadata: Metadata = {
-  title: "Proof of Learn",
-  description: "Rewarding learning with NFTs",
+  title: "Proof of Learn | Earn NFTs by Mastering Blockchain Skills",
+  description: "Join Proof of Learn, the ultimate educational platform where you can learn about blockchain, smart contracts, and Web3, and earn valuable NFT rewards for your achievements.",
 };
-
 
 export default function RootLayout({
   children,
@@ -33,9 +30,13 @@ export default function RootLayout({
       >
         <TooltipProvider delayDuration={0}>
           <Provider>
-            <Banner />
+            <Banner
+              message={"Live on Mainnet 🎉 Earn Yuzu Point 🍊 with PoL! ₍ᐢ-(ｪ)-ᐢ₎"}
+              href="/yuzu" />
             <NavBar />
             {children}
+
+            <div className="hidden p-5 max-w-80 w-80 bg-grayscale-000 cursor-not-allowed bg-green-100 text-green-800"></div>
             <Toaster />
           </Provider>
         </TooltipProvider>

@@ -9,16 +9,21 @@ import { flatten, folderItems, generateQuestContractPath, generateQuestId, gener
 import { IDEViewer } from "./ide-viewer";
 import { cn } from "@/lib/utils";
 import { Course } from "@/lib/db/course";
+import { useLocale } from "@/components/providers/locale-provider";
+import { useSearchParams } from "next/navigation";
 
 interface QuestViewerProps extends React.HTMLAttributes<HTMLDivElement> {
     owner: string,
     name: string,
     tree: GithubTreeInfo
-    metadata?: Course
+    metadata?: Course,
+    locales?: string[]
 }
 
-export function QuestViewer({ tree, owner, name, metadata }: QuestViewerProps) {
+export function QuestViewer({ tree, owner, name, metadata, locales = [] }: QuestViewerProps) {
     const quest = useQuest()
+    const locale = useLocale()
+    const searchParams = useSearchParams();
 
     const generateQuest = (item: QuestTitle, owner: string, name: string, parent?: QuestTitle) => {
         const questItem = { name: item }
@@ -32,6 +37,11 @@ export function QuestViewer({ tree, owner, name, metadata }: QuestViewerProps) {
     useEffect(() => {
         (async () => {
             console.log("QuestViewer mounted")
+
+            // Setup locale
+            locale.setQuestLocales(locales)
+            const queryLocale = searchParams.get("l")
+            locale.setSelectedLocale(queryLocale || "")
 
             const structure: QuestStructure = {} as QuestStructure
             // Get all folders under /content and remove /content from the path
@@ -75,7 +85,7 @@ export function QuestViewer({ tree, owner, name, metadata }: QuestViewerProps) {
             </div>
             <div className={cn(quest.showIDE ? "sticky top-0 col-span-12 lg:col-span-7 h-screen flex items-center justify-between" : "invisible")}>
                 {owner && name &&
-                    <IDEViewer uri={`https://solide0x.tech?url=https://github.com/${owner}/${name}/blob/master/contracts/Import.sol`} />}
+                    <IDEViewer uri={`https://solide0x.tech`} />}
             </div>
         </div>
         <QuestFooter className="sticky bottom-2 mx-4" />

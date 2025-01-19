@@ -7,38 +7,25 @@ import {
     Dialog,
     DialogContent,
     DialogDescription,
-    DialogHeader,
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
 import { Award } from "lucide-react";
-import { PoapMetadata, POLPoapContract } from "@/lib/poap";
+import { PoapMetadata, POLPoapContract, selectedNetwork } from "@/lib/poap";
 import toast from "react-hot-toast";
 import Image from 'next/image';
 import { createWalletClient, custom } from 'viem'
 import confetti from "canvas-confetti";
-import { getIPFSJson, ipfsGateway } from "@/lib/util/ipfs";
-import { useOCAuth } from "@opencampus/ocid-connect-js";
+import { retrieve, ipfsGateway } from "@/lib/util/ipfs";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden"
-import { selectedNetwork } from "@/lib/poap/chain";
-
-const getWallet = async () => {
-    const [account] = await window.ethereum.request({
-        method: 'eth_requestAccounts'
-    })
-
-    return createWalletClient({
-        account,
-        transport: custom(window.ethereum!)
-    })
-}
+import { useWallet } from "@/lib/wallet/src";
 
 interface MintingQuestProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export function MintingQuest({ className }: MintingQuestProps) {
     const { questPoap } = useQuest()
-    const { ocAuth, authState } = useOCAuth();
+    const wallet = useWallet()
 
     const [metadata, setMetadata] = useState("")
     const [poapMetadata, setPoapMetadata] = useState<PoapMetadata | undefined>()
@@ -51,21 +38,23 @@ export function MintingQuest({ className }: MintingQuestProps) {
                 const contract = new POLPoapContract({})
                 const metadata = await contract.uri(questPoap.tokenId.toString())
                 setHasMinted(0)
-                
+
                 if (!metadata) {
                     toast.error("Error getting metadata for POAP")
                     return;
                 }
 
-                const data: PoapMetadata = await getIPFSJson(metadata)
+                const data: PoapMetadata = await retrieve(metadata)
                 setPoapMetadata(data)
                 setMetadata(metadata)
 
-                if (authState.isAuthenticated) {
-                    const address = ocAuth?.getAuthInfo()?.eth_address
-                    const timeStamp = await contract.mintTracker(questPoap.tokenId.toString(), address)
-                    if (timeStamp !== BigInt(0)) {
-                        setHasMinted(Number(timeStamp) * 1000)
+                if (!await wallet.isConnected()) {
+                    const address = await wallet.getAccount()
+                    if (address) {
+                        const timeStamp = await contract.mintTracker(questPoap.tokenId.toString(), address)
+                        if (timeStamp !== BigInt(0)) {
+                            setHasMinted(Number(timeStamp) * 1000)
+                        }
                     }
                 }
             }
@@ -83,24 +72,34 @@ export function MintingQuest({ className }: MintingQuestProps) {
                 return;
             }
 
-            if (!authState.isAuthenticated) {
-                toast.error("Not logged to OCID")
+            if (!await wallet.isConnected()) {
+                toast.error("Please connect to a wallet")
+                return;
             }
 
-            const address = ocAuth.getAuthInfo().eth_address
+            const address = await wallet.getAccount()
+            if (!address) {
+                toast.error("Couldn't found an account")
+                return;
+            }
+            
+            const requestBody = {
+                owner: questPoap.owner, name: questPoap.name,
+                address,
+            }
 
             const response = await fetch("/api/mint-v2", {
                 method: "POST",
-                body: JSON.stringify({
-                    owner: questPoap.owner, name: questPoap.name,
-                    address,
-                }),
+                body: JSON.stringify(requestBody),
             })
 
             const result = await response.json()
-
             if (!response.ok) {
                 toast.error(result.message)
+
+                if (result.message.contains("POAP already minted")) {
+                    setHasMinted(0)
+                }
                 return
             }
 
@@ -115,22 +114,19 @@ export function MintingQuest({ className }: MintingQuestProps) {
                 return
             }
 
-            const [account] = await window.ethereum.request({
-                method: 'eth_requestAccounts'
-            })
-
-            const client = createWalletClient({
-                account,
+            const walletClient = createWalletClient({
+                account: address as `0x${string}`,
                 chain: selectedNetwork,
                 transport: custom(window.ethereum!)
             })
 
-            await client.switchChain({ id: selectedNetwork.id }) 
+            await walletClient.switchChain({ id: selectedNetwork.id })
 
             setIsMinting("Minting ...")
 
-            const poapContract = new POLPoapContract({ client })
-            const hash = await poapContract.mint(address, result.tokenId, "0x", result.verificationHash, result.signature)
+            const poapContract = new POLPoapContract({ wallet: walletClient })
+            const hash = await poapContract.mint(address as `0x${string}`,
+                result.tokenId, "0x", result.verificationHash, result.signature)
 
             triggerConfetti()
             triggerConfetti()
@@ -141,6 +137,11 @@ export function MintingQuest({ className }: MintingQuestProps) {
             toast.success(`Poap minted successfully. Hash ${hash}`)
 
             setHasMinted(Date.now())
+
+            fetch("/api/mint-v2/analytics", {
+                method: "POST",
+                body: JSON.stringify(requestBody),
+            })
         } catch (e) {
             console.error(e)
         } finally {
