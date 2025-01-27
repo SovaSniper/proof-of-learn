@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { MarkdownViewer } from "@/components/core/quest/markdown-viewer";
 import { GithubTreeInfo } from "@/lib/git";
 import { useQuest } from "@/components/providers/quest-provider";
@@ -21,6 +21,7 @@ interface QuestViewerProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export function QuestViewer({ tree, owner, name, metadata, locales = [] }: QuestViewerProps) {
+    const [ide, setIDE] = useState("")
     const quest = useQuest()
     const locale = useLocale()
     const searchParams = useSearchParams();
@@ -37,6 +38,13 @@ export function QuestViewer({ tree, owner, name, metadata, locales = [] }: Quest
     useEffect(() => {
         (async () => {
             console.log("QuestViewer mounted")
+
+            if (metadata?.type === "stylus") {
+                console.log("https://stylus.solide0x.tech")
+                setIDE("https://stylus.solide0x.tech")
+            } else if (metadata?.type === "move") {
+                setIDE("https://move.solide0x.tech")
+            }
 
             // Setup locale
             locale.setQuestLocales(locales)
@@ -83,9 +91,9 @@ export function QuestViewer({ tree, owner, name, metadata, locales = [] }: Quest
             <div className={cn("col-span-12 mt-8", quest.showIDE ? "lg:col-span-5" : "")}>
                 <MarkdownViewer />
             </div>
-            <div className={cn(quest.showIDE ? "sticky top-0 col-span-12 lg:col-span-7 h-screen flex items-center justify-between" : "invisible")}>
-                {owner && name &&
-                    <IDEViewer uri={`https://solide0x.tech`} />}
+            <div className={cn(quest.showIDE ? "sticky top-0 col-span-12 lg:col-span-7 h-screen flex items-center justify-between -mt-16" : "invisible")}>
+                {owner && name && ide &&
+                    <IDEViewer uri={ide} />}
             </div>
         </div>
         <QuestFooter className="sticky bottom-2 mx-4" />
