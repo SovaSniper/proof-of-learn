@@ -10,7 +10,6 @@
   "description": "",
   "dependencies": {
     "@opencampus/ocid-connect-js": "1.2.1",
-    "js-cookie": "^3.0.5",
     "react": "^19.0.0"
   },
   "devDependencies": {

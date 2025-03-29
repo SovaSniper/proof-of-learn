@@ -39,11 +39,17 @@ export function QuestViewer({ tree, owner, name, metadata, locales = [] }: Quest
         (async () => {
             console.log("QuestViewer mounted")
 
+            setIDE("https://evm.polearn.xyz")
             if (metadata?.type === "stylus") {
-                console.log("https://stylus.solide0x.tech")
-                setIDE("https://stylus.solide0x.tech")
+                setIDE("https://stylus.polearn.xyz")
             } else if (metadata?.type === "move") {
-                setIDE("https://move.solide0x.tech")
+                setIDE("https://move.polearn.xyz")
+            } else if (metadata?.type === "soroban") {
+                setIDE("https://soroban.polearn.xyz")
+            } else if (metadata?.type === "clarity") {
+                setIDE("https://clarity.polearn.xyz")
+            } else if (metadata?.type === "sway") {
+                setIDE("https://sway.polearn.xyz")
             }
 
             // Setup locale
