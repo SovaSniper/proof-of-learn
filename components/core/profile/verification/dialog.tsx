@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import {
     Dialog,
     DialogContent,
@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dialog"
 import { Poap } from "@/lib/poap"
 import { VerificationContent } from "@/components/core/profile/verification/content";
+import { cn } from "@/lib/utils";
 
 interface VerificationDialogProps extends React.HTMLAttributes<HTMLDivElement> {
     poap: Poap
@@ -17,16 +18,17 @@ interface VerificationDialogProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export function VerificationDialog({ poap }: VerificationDialogProps) {
     return <Dialog>
-        <DialogTrigger asChild>
-            <div className="flex items-center justify-center">
-                <Button variant="outline">View Verification</Button>
-            </div>
+        <DialogTrigger className={cn(buttonVariants({ variant: "secondary" }), "w-full font-medium")}>
+            View Verification
         </DialogTrigger>
-        <DialogContent className="max-h-[720px] max-w-[800px] overflow-auto">
+        <DialogContent className="max-h-[80%] !max-w-3xl overflow-auto">
             <DialogHeader>
-                <DialogTitle>Verification</DialogTitle>
+                <DialogTitle className="font-bold text-2xl">Verification</DialogTitle>
             </DialogHeader>
-            <VerificationContent cid={poap.verification} />
+
+            <div className="max-w-full">
+                <VerificationContent name={poap.metadata.name} cid={poap.verification} />
+            </div>
         </DialogContent>
     </Dialog>
 }

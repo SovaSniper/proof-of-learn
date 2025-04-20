@@ -8,6 +8,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { GoogleAnalytics } from '@next/third-parties/google'
 
 import "./globals.css";
+import "@rainbow-me/rainbowkit/styles.css";
+
 import { Banner } from "@/components/core/home/banner";
 
 export const metadata: Metadata = {
