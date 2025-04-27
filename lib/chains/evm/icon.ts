@@ -9,6 +9,7 @@ const getIcon = (chainId: string): string => {
     case ChainID.ETHEREUM_GOERLI:
     case ChainID.ETHEREUM_SEPOLIA:
     case ChainID.ETHEREUM_HOLESKY:
+    case ChainID.EPHEMERY_TESTNET:
       return "eth.svg"
     case ChainID.METIS_ANDROMEDA:
     case ChainID.METIS_SEPOLIA:
@@ -156,6 +157,7 @@ const getIcon = (chainId: string): string => {
     case ChainID.CARBON_EVM_MAINNET:
     case ChainID.CARBON_EVM_TESTNET:
       return "carbon.svg"
+    case ChainID.ARTELA:
     case ChainID.ARTELA_TESTNET:
       return "artela.svg"
     case ChainID.BERACHAIN_TESTNET:
@@ -188,6 +190,7 @@ const getIcon = (chainId: string): string => {
     case ChainID.MODE_MAINNET:
     case ChainID.MODE_SEPOLIA:
       return "mode.svg"
+    case ChainID.MORPH:
     case ChainID.MORPH_TESTNET:
       return "morph.svg"
     case ChainID.BLAST_MAINNET:
@@ -228,6 +231,7 @@ const getIcon = (chainId: string): string => {
       return "kroma.svg"
     case ChainID.COTI_DEVNET:
     case ChainID.COTI_TESTNET:
+    case ChainID.COTI_MAINNET:
       return "coti.svg"
     case ChainID.LISK_MAINNET:
     case ChainID.LISK_SEPOLIA:
@@ -270,6 +274,40 @@ const getIcon = (chainId: string): string => {
       return "sonic.svg"
     case ChainID.ABSTRACT_TESTNET:
       return "abstract.svg"
+    case ChainID.HEMI_TESTNET:
+      return "hemi.svg"
+    case ChainID.MINT:
+    case ChainID.MINT_SEPOLIA:
+      return "mint.svg"
+    case ChainID.TABI_TESTNET:
+      return "tabi.svg"
+    case ChainID.SUPERPOSITION:
+    case ChainID.SUPERPOSITION_TESTNET:
+      return "superposition.svg"
+    case ChainID.STACK:
+    case ChainID.STACK_TESTNET:
+      return "stack.svg"
+    case ChainID.SWELLCHAIN:
+    case ChainID.SWELLCHAIN_TESTNET:
+      return "swell.svg"
+    case ChainID.PLUME:
+    case ChainID.PLUME_TESTNET:
+      return "plume.svg"
+    case ChainID.DARWINIA:
+    case ChainID.DARWINIA_CRAB:
+      return "darwinia.svg"
+    case ChainID.ANCIENT_8:
+    case ChainID.ANCIENT_8_TESTNET:
+      return "ancient8.svg"
+    case ChainID.AUTHEO_TESTNET:
+      return "autheo.svg"
+    case ChainID.MONAD_TESTNET:
+      return "monad.svg"
+    case ChainID.BOUNCEBIT:
+    case ChainID.BOUNCEBIT_TESTNET:
+      return "bbs.svg"
+    case ChainID.PHAROS_DEVNET:
+      return "pharos.svg"
     default:
       return ""
   }
